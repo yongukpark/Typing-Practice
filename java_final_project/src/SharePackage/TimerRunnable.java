@@ -4,9 +4,11 @@ import javax.swing.JLabel;
 
 public class TimerRunnable implements Runnable{
 	private JLabel timerLabel;
-	public TimerRunnable(JLabel timerLabel)
+	private JLabel realTime;
+	public TimerRunnable(JLabel timerLabel, JLabel time)
 	{
 		this.timerLabel = timerLabel;
+		this.realTime = time;
 	}
 	@Override
 	public void run()
@@ -15,6 +17,7 @@ public class TimerRunnable implements Runnable{
 		while(true)
 		{
 			n++;
+			realTime.setText(Integer.toString(n));
 			String minute = String.format("%02d", n/60);
 			String second = String.format("%02d", n%60);
 			timerLabel.setText(minute + ":" + second);
@@ -25,4 +28,5 @@ public class TimerRunnable implements Runnable{
 			}
 		}
 	}
+
 }

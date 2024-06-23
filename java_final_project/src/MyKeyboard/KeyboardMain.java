@@ -67,7 +67,14 @@ public class KeyboardMain extends JFrame{
 	{
 		JButton button = new JButton("Word Practice");
 		button.setLocation(850,320);
-		setButton(button);	
+		setButton(button);
+		button.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panel.setVisible(false);
+				new WordPractice();
+			}
+		});
 	}
 	
 	public void shortButton()
@@ -95,7 +102,7 @@ public class KeyboardMain extends JFrame{
 	{
 		JButton button = new JButton("HELP ?");
 		button.setLocation(850,630);
-		setButton(button);	
+		setButton(button);
 	}
 	
 	public void character()

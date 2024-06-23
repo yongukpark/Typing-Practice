@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class LetterPractice extends Pratice{
+public class LetterPractice extends Practice{
 	
 	public LetterPractice()
 	{

@@ -4,6 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -11,22 +22,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.text.MutableAttributeSet;
 
 import SharePackage.TimerRunnable;
 
-public class Pratice extends JFrame{
+public class Practice extends JFrame{
 	private MyPanel panel = new MyPanel();
 	private ImageIcon timerIcon = new ImageIcon("image/timer.jpeg");
 	private JLabel timerLabel = new JLabel();
+	protected JLabel realTime = new JLabel();
 	protected JTextField input = new JTextField();
 	protected JTextField target = new JTextField();
-	protected JTextField prevTarget = new JTextField();
-	protected JTextField prevInput = new JTextField();
-	private TimerRunnable timerRunnable = new TimerRunnable(timerLabel);
-	private Thread thread = new Thread(timerRunnable);
-	private JLabel correctCount = new JLabel("00000");
-	private JLabel correctPercent = new JLabel("000000");
-	private JLabel wpm = new JLabel("00000");
+	protected JTextField prevTarget = new JTextField("Press 'Enter' to start practice");
+	protected JTextField prevInput = new JTextField("Press 'Enter' to start practice");
+	private TimerRunnable timerRunnable = new TimerRunnable(timerLabel, realTime);
+	protected Thread thread = new Thread(timerRunnable);
+	protected JLabel correctCount = new JLabel("0");
+	protected JLabel correctPercent = new JLabel("0%");
+	protected JLabel wpm = new JLabel("0");
+	protected int correct = -1;
 	
 	class MyPanel extends JPanel
 	{
@@ -64,7 +78,7 @@ public class Pratice extends JFrame{
 		timerLabel.setFont(new Font("Arial",Font.BOLD,30));
 		timerLabel.setLocation(120,50);
 		panel.add(timerLabel);
-		thread.start();
+		
 	}
 	
 	public void infoView()
@@ -113,6 +127,7 @@ public class Pratice extends JFrame{
 		prevTarget.setLocation(200,240);
 		prevTarget.setSize(800,90);
 		prevTarget.setBorder(null);
+		prevTarget.setForeground(new Color(194, 192, 188));
 		prevTarget.setBackground(new Color(232, 233, 235));
 		panel.add(prevTarget);
 		target.setEditable(false);
@@ -127,6 +142,7 @@ public class Pratice extends JFrame{
 		prevInput.setEditable(false);
 		prevInput.setFont(new Font("Arial",Font.PLAIN,40));
 		prevInput.setLocation(200,460);
+		prevInput.setForeground(new Color(194, 192, 188));
 		prevInput.setSize(800,90);
 		prevInput.setBorder(null);
 		prevInput.setBackground(new Color(232, 233, 235));
@@ -136,9 +152,10 @@ public class Pratice extends JFrame{
 		input.setSize(800,90);
 		input.setBorder(new LineBorder(new Color(124, 163, 242), 1));
 		panel.add(input);
+
 	}
 	
-	public Pratice()
+	public Practice()
 	{
 		
 		setTimer();
@@ -147,5 +164,7 @@ public class Pratice extends JFrame{
 		setTarget();
 		setInput();
 		this.setVisible(true);
+		input.setFocusable(true);
+		input.requestFocusInWindow(); 
 	}
 }
