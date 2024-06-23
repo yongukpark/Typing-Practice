@@ -57,7 +57,7 @@ public class KeyboardMain extends JFrame{
 		button.addActionListener(new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				panel.setVisible(false);
+				dispose();
 				new LetterPractice();
 			}
 		});
@@ -71,7 +71,7 @@ public class KeyboardMain extends JFrame{
 		button.addActionListener(new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				panel.setVisible(false);
+				dispose();
 				new WordPractice();
 			}
 		});
@@ -81,7 +81,14 @@ public class KeyboardMain extends JFrame{
 	{
 		JButton button = new JButton("Short Practice");
 		button.setLocation(850,390);
-		setButton(button);		
+		setButton(button);
+		button.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new ShortPractice();
+			}
+		});
 	}
 	
 	public void longButton()
@@ -89,6 +96,13 @@ public class KeyboardMain extends JFrame{
 		JButton button = new JButton("Long Practice");
 		button.setLocation(850,460);
 		setButton(button);	
+		button.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new LongPracticeMenu();
+			}
+		});
 	}
 	
 	public void CSButton()

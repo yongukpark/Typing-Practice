@@ -27,9 +27,9 @@ import javax.swing.text.MutableAttributeSet;
 import SharePackage.TimerRunnable;
 
 public class Practice extends JFrame{
-	private MyPanel panel = new MyPanel();
+	protected MyPanel panel = new MyPanel();
 	private ImageIcon timerIcon = new ImageIcon("image/timer.jpeg");
-	private JLabel timerLabel = new JLabel();
+	protected JLabel timerLabel = new JLabel();
 	protected JLabel realTime = new JLabel();
 	protected JTextField input = new JTextField();
 	protected JTextField target = new JTextField();
@@ -37,7 +37,7 @@ public class Practice extends JFrame{
 	protected JTextField prevInput = new JTextField("Press 'Enter' to start practice");
 	private TimerRunnable timerRunnable = new TimerRunnable(timerLabel, realTime);
 	protected Thread thread = new Thread(timerRunnable);
-	protected JLabel correctCount = new JLabel("0");
+	protected JLabel countnum = new JLabel("0");
 	protected JLabel correctPercent = new JLabel("0%");
 	protected JLabel wpm = new JLabel("0");
 	protected int correct = -1;
@@ -88,13 +88,13 @@ public class Practice extends JFrame{
 		p.setLayout(null);
 		p.setLocation(200,100);
 		p.setSize(800,100);
-		JLabel cc = new JLabel("Correct Num  : ");
+		JLabel cc = new JLabel("Progress : ");
 		cc.setLocation(39, 5);
 		cc.setSize(200,40);
 		cc.setFont(new Font("Arial",Font.BOLD,20));
-		correctCount.setLocation(190,5);
-		correctCount.setSize(200,40);
-		correctCount.setFont(new Font("Arial",Font.PLAIN,20));
+		countnum.setLocation(190,5);
+		countnum.setSize(200,40);
+		countnum.setFont(new Font("Arial",Font.PLAIN,20));
 		JLabel cp = new JLabel("Correct Percent  : ");
 		cp.setLocation(10,50);
 		cp.setSize(200,40);
@@ -112,7 +112,7 @@ public class Practice extends JFrame{
 		p.add(cc);
 		p.add(cp);
 		p.add(w);
-		p.add(correctCount);
+		p.add(countnum);
 		p.add(correctPercent);
 		p.add(wpm);
 		panel.add(p);
@@ -152,7 +152,6 @@ public class Practice extends JFrame{
 		input.setSize(800,90);
 		input.setBorder(new LineBorder(new Color(124, 163, 242), 1));
 		panel.add(input);
-
 	}
 	
 	public Practice()
