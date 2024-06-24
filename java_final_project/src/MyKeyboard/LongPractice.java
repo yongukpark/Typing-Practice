@@ -86,7 +86,11 @@ public class LongPractice extends Practice{
 	        	if(count != 0 )
 	        	{
 		        	correctPercent.setText(Integer.toString(correct * 100 / count) + "%");
-		        	wpm.setText(Integer.toString(letterNum*60 / Integer.parseInt(realTime.getText())));
+		        	
+	        	}
+	        	if(!realTime.getText().equals("0"))
+	        	{
+	        		wpm.setText(Integer.toString(letterNum*60 / Integer.parseInt(realTime.getText())));
 	        	}
 	    		prevTarget.setText(target.getText());
 	    		target.setText(arr[count]);

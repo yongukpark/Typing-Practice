@@ -107,9 +107,16 @@ public class KeyboardMain extends JFrame{
 	
 	public void CSButton()
 	{
-		JButton button = new JButton("CS Practice");
+		JButton button = new JButton("Challenge");
 		button.setLocation(850,530);
 		setButton(button);	
+		button.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new Challenge();
+			}
+		});
 	}
 	
 	public void questionButton()

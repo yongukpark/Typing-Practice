@@ -89,9 +89,11 @@ public class ShortPractice extends Practice{
 	        	countnum.setText(Integer.toString(count+1)+"/ 10");
 	        	if(count != 0 )
 	        	{
-	        		
 		        	correctPercent.setText(Integer.toString(correct * 100 / count) + "%");
-		        	wpm.setText(Integer.toString(letterNum*60 / Integer.parseInt(realTime.getText())));
+	        	}
+	        	if(!realTime.getText().equals("0"))
+	        	{
+	        		wpm.setText(Integer.toString(letterNum*60 / Integer.parseInt(realTime.getText())));
 	        	}
 	    		int n = random.nextInt(arr.length);
 	    		prevTarget.setText(target.getText());

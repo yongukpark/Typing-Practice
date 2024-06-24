@@ -25,15 +25,15 @@ import javax.swing.border.LineBorder;
 import SharePackage.TimerRunnable;
 
 public class LetterPractice extends JFrame{
-	protected MyPanel panel = new MyPanel();
+	private MyPanel panel = new MyPanel();
 	private ImageIcon timerIcon = new ImageIcon("image/timer.jpeg");
 	private JLabel timerLabel = new JLabel();
-	protected JLabel realTime = new JLabel();
-	protected JTextField target = new JTextField();
+	private JLabel realTime = new JLabel();
+	private JTextField target = new JTextField();
 	private TimerRunnable timerRunnable = new TimerRunnable(timerLabel, realTime);
-	protected Thread thread = new Thread(timerRunnable);
-	protected JLabel countnum = new JLabel("0");
-	protected JLabel correctPercent = new JLabel("0%");
+	private Thread thread = new Thread(timerRunnable);
+	private JLabel countnum = new JLabel("0");
+	private JLabel correctPercent = new JLabel("0%");
 	private JLabel startJLabel = new JLabel("Press 'enter' to start");
 	private boolean flg = false;
 	private int correct = 0;
@@ -83,7 +83,9 @@ public class LetterPractice extends JFrame{
     		{
     			thread.interrupt();
     			String[] answer={"restart", "main"};
-    			String message= "correct : " + correct * 100 / count + "%" + "\n\nrestart?";
+    			String message = "time : " + timerLabel.getText() + "\ncorrect : " + correct * 100 / count + "%" + "\n\nrestart?";
+
+    			
     			int res = JOptionPane.showOptionDialog(null, message, "Option"
     					,JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, answer, null );
     			if(res == JOptionPane.YES_OPTION)

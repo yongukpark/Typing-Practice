@@ -151,6 +151,10 @@ public class LongPracticeMenu extends JFrame {
 		button.addActionListener(new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(strList.getSelectedValue() == null)
+				{
+					return;
+				}
 				dispose();
 				new LongPractice("file/LongPractice/" + strList.getSelectedValue() + ".txt");
 			}
