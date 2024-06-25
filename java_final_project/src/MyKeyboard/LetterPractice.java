@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -241,9 +242,33 @@ public class LetterPractice extends JFrame{
 		startJLabel.setFont(new Font("Arial",Font.ITALIC,20));
 		panel.add(startJLabel);
 	}
+	public void homeButton()
+	{
+		
+        ImageIcon icon = new ImageIcon("image/home.png");
+        Image img = icon.getImage();
+        
+		Image updateImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		JButton button = new JButton(icon);
+        button.setLocation(1050,50);
+        button.setSize(50,50);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                thread.interrupt();
+				dispose();
+				new KeyboardMain();
+            }
+
+        });
+
+        panel.add(button);
+	}
 	
 	public LetterPractice()
 	{
+		homeButton();
 		setKeyBoard();
 		setStartJLabel();
 		setTimer();

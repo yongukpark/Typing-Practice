@@ -1,7 +1,6 @@
 package MyKeyboard;
 
 import java.awt.Font;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class ShortPractice extends Practice{

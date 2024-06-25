@@ -5,8 +5,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import MyKeyboard.KeyboardMain.MyPanel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +14,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class LongPracticeMenu extends JFrame {
 	private MyPanel panel = new MyPanel();
@@ -161,7 +158,30 @@ public class LongPracticeMenu extends JFrame {
 		});
 		panel.add(button);
 	}
+	public void homeButton()
+	{
+		
+        ImageIcon icon = new ImageIcon("image/home.png");
+        Image img = icon.getImage();
+        
+		Image updateImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		JButton button = new JButton(icon);
+        button.setLocation(1050,50);
+        button.setSize(50,50);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				dispose();
+				new KeyboardMain();
+            }
+
+        });
+
+        panel.add(button);
+	}
 	public LongPracticeMenu() {
+		homeButton();
 		setWindow();
 		setTitle();
 		selectBar();

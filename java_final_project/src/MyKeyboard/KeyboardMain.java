@@ -2,6 +2,8 @@ package MyKeyboard;
 
 import javax.swing.*;
 
+import SharePackage.index;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,6 +49,29 @@ public class KeyboardMain extends JFrame{
 		button.setFont(new Font("Arial", Font.BOLD, 20));
 		button.addMouseListener(new ButtonMouseAdapter());
 		panel.add(button);
+	}
+	
+	public void homeButton()
+	{
+		
+        ImageIcon icon = new ImageIcon("image/home.png");
+        Image img = icon.getImage();
+        
+		Image updateImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		JButton button = new JButton(icon);
+        button.setLocation(1050,50);
+        button.setSize(50,50);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				dispose();
+				new index();
+            }
+
+        });
+
+        panel.add(button);
 	}
 	
 	public void letterButton()
@@ -105,7 +130,7 @@ public class KeyboardMain extends JFrame{
 		});
 	}
 	
-	public void CSButton()
+	public void ChallengeButton()
 	{
 		JButton button = new JButton("Challenge");
 		button.setLocation(850,530);
@@ -118,18 +143,6 @@ public class KeyboardMain extends JFrame{
 			}
 		});
 	}
-	
-	public void questionButton()
-	{
-		JButton button = new JButton("HELP ?");
-		button.setLocation(850,630);
-		setButton(button);
-	}
-	
-	public void character()
-	{
-		
-	}
 
 	public KeyboardMain()
 	{
@@ -139,12 +152,8 @@ public class KeyboardMain extends JFrame{
 		wordButton();
 		shortButton();
 		longButton();
-		CSButton();
-		character();
-		questionButton();
+		ChallengeButton();
+		homeButton();
 		this.setVisible(true);
-	}
-	public static void main(String[] args) {
-		new KeyboardMain();
 	}
 }

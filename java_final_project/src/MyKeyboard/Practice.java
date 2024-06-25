@@ -6,23 +6,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.swing.text.MutableAttributeSet;
 
 import SharePackage.TimerRunnable;
 
@@ -153,10 +144,33 @@ public class Practice extends JFrame{
 		input.setBorder(new LineBorder(new Color(124, 163, 242), 1));
 		panel.add(input);
 	}
+	public void homeButton()
+	{
+		
+        ImageIcon icon = new ImageIcon("image/home.png");
+        Image img = icon.getImage();
+        
+		Image updateImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		JButton button = new JButton(icon);
+        button.setLocation(1050,50);
+        button.setSize(50,50);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                thread.interrupt();
+				dispose();
+				new KeyboardMain();
+            }
+
+        });
+
+        panel.add(button);
+	}
 	
 	public Practice()
 	{
-		
+		homeButton();
 		setTimer();
 		setWindow();
 		infoView();

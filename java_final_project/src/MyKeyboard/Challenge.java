@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -12,11 +13,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
+	
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -24,11 +25,13 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
 
 public class Challenge extends JFrame {
 	private MyPanel panel = new MyPanel();
@@ -41,14 +44,15 @@ public class Challenge extends JFrame {
 	private Thread thread = new Thread(timerRunnable);
 	private JLabel countnum = new JLabel("0");
 	private JLabel correctPercent = new JLabel("0%");
-	private JLabel wpm = new JLabel("1");
+	private JLabel wpm = new JLabel("0");
 	private boolean flg = false;
 	private SimpleAttributeSet set = new SimpleAttributeSet();
 	private ArrayList<Integer> arr = new ArrayList<Integer>();
 	private Graph graph = new Graph(arr);
 	private int count = 0;
-	private boolean correctFlg = true;
+	private int correctFlg = 0;
 	private int correct = 0;
+	private int [][]report = new int [26][26];
 
 	class MyPanel extends JPanel {
 		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
@@ -89,26 +93,8 @@ public class Challenge extends JFrame {
 					return;
 				}
 			}
-			String message;
-			if(count == 0)
-			{
-				message = "correct : 0%" + "\nWPM : "
-						+ Integer.toString(correct * 60 / Integer.parseInt(realTime.getText())) + "\n\nrestart?";
-			}
-			else {
-				message = "correct : " + correct * 100 / count + "%" + "\nWPM : "
-						+ Integer.toString(correct * 60 / Integer.parseInt(realTime.getText())) + "\n\nrestart?";
-			}
-			String[] answer = { "restart", "main" };
-			int res = JOptionPane.showOptionDialog(null, message, "Option", JOptionPane.YES_NO_OPTION,
-					JOptionPane.INFORMATION_MESSAGE, null, answer, null);
-			if (res == JOptionPane.YES_OPTION) {
-				dispose();
-				new LetterPractice();
-			} else {
-				dispose();
-				new KeyboardMain();
-			}
+			dispose();
+			new ChallengeReport(report, count, correct, wpm);
 		}
 
 	}
@@ -120,13 +106,48 @@ public class Challenge extends JFrame {
 			if (flg == false) {
 				thread.start();
 				flg = true;
-				correctFlg = true;
+				correctFlg = 0;
 			}
 			
 			StyledDocument doc = preInput.getStyledDocument();
-			if (keyChar == ' ') {
+			if(keyChar == 8) {
+				if(preInput.getText().length() == 0)
+				{
+					return;
+				}
+				else if(preInput.getText().charAt(preInput.getText().length()-1) == ' ')
+				{
+					return;
+				}
+				else
+				{
+					int idx = preInput.getText().length();
+					Element element = doc.getCharacterElement(idx-1);
+					AttributeSet attribute = element.getAttributes();
+					Color color = StyleConstants.getForeground(attribute);
+					if(color.getRed() == 255)
+					{
+						correctFlg--;
+						try {
+							doc.remove(idx-1, 1);
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
+						}
+					}
+					else {
+						postInput.setText(preInput.getText().charAt(idx - 1) + postInput.getText());
+						try {
+							doc.remove(idx-1, 1);
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
+						}
+					}
+					
+				}
+			}
+			else if (keyChar == ' ') {
 				if (postInput.getText().charAt(0) == ' ') {
-					if (correctFlg == true) {
+					if (correctFlg == 0) {
 						correct++;
 						count++;
 						StyleConstants.setForeground(set, Color.black);
@@ -138,7 +159,7 @@ public class Challenge extends JFrame {
 						postInput.setText(postInput.getText().substring(1, postInput.getText().length()));
 					} else {
 						count++;
-						correctFlg = true;
+						correctFlg = 0;
 						StyleConstants.setForeground(set, Color.black);
 						try {
 							doc.insertString(doc.getLength(), Character.toString(keyChar), set);
@@ -148,7 +169,7 @@ public class Challenge extends JFrame {
 						postInput.setText(postInput.getText().substring(1, postInput.getText().length()));
 					}
 				} else {
-					correctFlg = true;
+					correctFlg = 0;
 					count++;
 					StyleConstants.setForeground(set, Color.red);
 					int idx = postInput.getText().indexOf(' ');
@@ -162,6 +183,15 @@ public class Challenge extends JFrame {
 				
 				correctPercent.setText(Integer.toString(correct * 100 / count) + "%");		
 			} else if (keyChar == postInput.getText().charAt(0)) {
+				if(keyChar >= 65 && keyChar <= 90)
+				{
+					report[keyChar-65][keyChar-65]++;
+				}
+				else if(keyChar >= 97 && keyChar <= 122)
+				{
+					report[keyChar-97][keyChar-97]++;
+				}
+				
 				StyleConstants.setForeground(set, Color.black);
 				try {
 					doc.insertString(doc.getLength(), Character.toString(keyChar), set);
@@ -170,7 +200,30 @@ public class Challenge extends JFrame {
 				}
 				postInput.setText(postInput.getText().substring(1, postInput.getText().length()));
 			} else if (keyChar >= 32 && keyChar <= 126) {
-				correctFlg = false;
+				int idxx = -1;
+				if(postInput.getText().charAt(0) >= 65 && postInput.getText().charAt(0) <= 90)
+				{
+					idxx = postInput.getText().charAt(0) - 65;
+				}
+				else if(postInput.getText().charAt(0) >= 97 && postInput.getText().charAt(0) <= 122)
+				{
+					idxx = postInput.getText().charAt(0) - 97;
+				}
+				
+				int idxy = -1;
+				if(keyChar >= 65 && keyChar <= 90)
+				{
+					idxy = keyChar-65;
+				}
+				else if(keyChar >= 97 && keyChar <= 122)
+				{
+					idxy = keyChar - 97;
+				}
+				if(idxx != -1 && idxy !=-1)
+				{
+					report[idxx][idxy]++;
+				}
+				correctFlg++;
 				StyleConstants.setForeground(set, Color.red);
 				try {
 					doc.insertString(doc.getLength(), Character.toString(keyChar), set);
@@ -338,9 +391,32 @@ public class Challenge extends JFrame {
 		graph.setLayout(null);
 		panel.add(graph);
 	}
+	
+	public void homeButton()
+	{
+		
+        ImageIcon icon = new ImageIcon("image/home.png");
+        Image img = icon.getImage();
+        
+		Image updateImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		JButton button = new JButton(icon);
+        button.setLocation(1050,50);
+        button.setSize(50,50);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                thread.interrupt();
+				dispose();
+				new KeyboardMain();
+            }
 
+        });
+
+        panel.add(button);
+	}
 	public Challenge() {
-
+		homeButton();
 		importPractice();
 		setGraph();
 		setTimer();

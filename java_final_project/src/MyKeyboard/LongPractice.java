@@ -32,7 +32,6 @@ public class LongPractice extends Practice{
         
 	}
 	
-	
 	public LongPractice(String s)
 	{
 		super();
