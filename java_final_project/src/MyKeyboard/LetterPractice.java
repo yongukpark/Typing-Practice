@@ -83,6 +83,10 @@ public class LetterPractice extends JFrame{
     		if(count == 30)
     		{
     			thread.interrupt();
+    			if(count != 0 )
+            	{
+    	        	correctPercent.setText(Integer.toString(correct * 100 / count)+ "%");
+            	}
     			String[] answer={"restart", "main"};
     			String message = "time : " + timerLabel.getText() + "\ncorrect : " + correct * 100 / count + "%" + "\n\nrestart?";
 

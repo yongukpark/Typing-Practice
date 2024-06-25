@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,8 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
+
 import MyKeyboard.KeyboardMain;
-import MyMouse.MousePractice;
 import MyMouse.SelectIcon;
 
 
@@ -89,8 +92,38 @@ public class index extends JFrame{
 		});
 	}
 	
+	public void setLeaderBoard()
+	{
+		JButton button = new JButton("Leader Board");
+		button.setLocation(950,100);
+		button.setOpaque(true);
+		button.setBackground(new Color(230, 244, 242));
+		button.setBorder(new BevelBorder(BevelBorder.RAISED));
+		button.setSize(200,50);
+		button.setFont(new Font("Arial",Font.BOLD,20));
+		button.addMouseListener(new MouseAdapter() {		
+				public void mouseEntered(MouseEvent e)
+				{
+					JButton button = (JButton)e.getSource();
+					button.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+				}
+				public void mouseExited(MouseEvent e)
+				{
+					JButton button = (JButton)e.getSource();
+					button.setBorder(new BevelBorder(BevelBorder.RAISED));
+				}
+				public void mousePressed(MouseEvent e)
+				{
+					dispose();
+					new LeaderBoard();
+				}
+		});
+		panel.add(button);
+	}
+	
 	public index()
 	{
+		setLeaderBoard();
 		setKeyBoard();
 		setMouse();
 		setTitle();

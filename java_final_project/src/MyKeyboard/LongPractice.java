@@ -66,6 +66,15 @@ public class LongPractice extends Practice{
 	    		if(count == arr.length)
 	    		{
 	    			thread.interrupt();
+	    			if(count != 0 )
+		        	{
+			        	correctPercent.setText(Integer.toString(correct * 100 / count) + "%");
+			        	
+		        	}
+		        	if(!realTime.getText().equals("0"))
+		        	{
+		        		wpm.setText(Integer.toString(letterNum*60 / Integer.parseInt(realTime.getText())));
+		        	}
 	    			String[] answer={"restart", "main"};
 	    			String message= "time : " + timerLabel.getText() + "\ncorrect : " + correct * 100 / count + "%" + "\nWPM : " + Integer.toString(letterNum*60 / Integer.parseInt(realTime.getText())) +"\n\nrestart?";
 	    			int res = JOptionPane.showOptionDialog(null, message, "Option"

@@ -137,8 +137,6 @@ public class MousePractice extends JFrame{
 			{
 				correctPercent.setText(Integer.toString(correct * 100 / count) + "%");
 			}
-			System.out.println(correct);
-			System.out.println(count);
 		}
 	}
 	

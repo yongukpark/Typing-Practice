@@ -77,7 +77,6 @@ public class SelectIcon extends JFrame {
 		File[] subFiles = dir.listFiles();
 		for (int i = 0; i < subFiles.length; i++) {
 			iconList.add(subFiles[i].getName());
-			System.out.println(subFiles[i].getName());
 		}
 		ImageIcon icon = new ImageIcon("image/MousePracticeIcon/" + iconList.get(curIdx));
 		Image img = icon.getImage();

@@ -7,6 +7,8 @@ import SharePackage.index;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class KeyboardMain extends JFrame{
 	private MyPanel panel = new MyPanel();
@@ -20,7 +22,21 @@ public class KeyboardMain extends JFrame{
 			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
 		}
 	}
-	
+	public class ButtonMouseAdapter extends MouseAdapter{
+		public void mouseEntered(MouseEvent e)
+		{
+			JButton button = (JButton)e.getSource();
+			button.setForeground(Color.blue);
+			button.setFont(new Font("Arial", Font.BOLD, 25));
+		}
+		public void mouseExited(MouseEvent e)
+		{
+			JButton button = (JButton)e.getSource();
+			button.setForeground(Color.black);
+			button.setFont(new Font("Arial", Font.BOLD, 20));
+		}
+	}
+
 	public void setWindow()
 	{
 		setTitle("Typing Trainer");
