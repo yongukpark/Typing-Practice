@@ -2,18 +2,14 @@ package SharePackage;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
@@ -23,16 +19,7 @@ import MyMouse.SelectIcon;
 
 public class index extends JFrame{
 	private MyPanel panel = new MyPanel();
-	class MyPanel extends JPanel
-	{
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
+
 	public void setWindow()
 	{
 		setTitle("Typing Trainer");
@@ -43,6 +30,7 @@ public class index extends JFrame{
 		this.setResizable(false);
 		panel.setLayout(null);
 	}
+	
 	public void setTitle()
 	{
 		JLabel title = new JLabel("Welcome to Practice");

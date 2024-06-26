@@ -8,6 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -18,8 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import MyKeyboard.KeyboardMain;
-import MyKeyboard.ShortPractice;
+import SharePackage.MyPanel;
 import SharePackage.index;
 
 public class MousePractice extends JFrame{
@@ -40,17 +47,8 @@ public class MousePractice extends JFrame{
 	private Random random = new Random();
 	private int count = -1;
 	private String imgFile;
+	private String name;
 	
-	class MyPanel extends JPanel
-	{
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
 	
 	public class TimerRunnable implements Runnable{
 
@@ -79,6 +77,30 @@ public class MousePractice extends JFrame{
 
 	}
 
+	class Pair2 implements Comparable<Pair2> {
+		String name;
+		int correct;
+		double speed;
+
+		Pair2(String name, double speed, int correct) {
+			this.name = name;
+			this.speed = speed;
+			this.correct = correct;
+		}
+		@Override
+		public int compareTo(Pair2 p) {
+			if (this.speed < p.speed) {
+				return -1;
+			} 
+			else if (this.speed == p.speed) {
+				if (this.correct > p.correct) {
+					return -1;
+				}
+			}
+			return 1;
+		}
+	}
+	
 	class PanelMouseAdapter extends MouseAdapter
 	{
 		@Override
@@ -109,6 +131,7 @@ public class MousePractice extends JFrame{
 				{
 					correctPercent.setText(Integer.toString(correct * 100 / count) + "%");	
 				}
+				setLeaderBoard();
     			String[] answer={"restart", "main"};
     			String message= "time : " + timerLabel.getText() + "\ncorrect : " + correct * 100 / count + "%" + "\nSpeed: " + wpm.getText() +"\n\nrestart?";
     			int res = JOptionPane.showOptionDialog(null, message, "Option"
@@ -116,7 +139,7 @@ public class MousePractice extends JFrame{
     			if(res == JOptionPane.YES_OPTION)
     			{
     				dispose();
-    				new MousePractice(imgFile);
+    				new MousePractice(imgFile, name);
     			}
     			else
     			{
@@ -142,7 +165,7 @@ public class MousePractice extends JFrame{
 	
 	public void setWindow()
 	{
-		setTitle("Typing practice");
+		setTitle("Mouse practice");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200,800);
 		setContentPane(panel);
@@ -264,8 +287,53 @@ public class MousePractice extends JFrame{
 		dot.setOpaque(true);
 		ground.add(dot);
 	}
-	public MousePractice(String s)
+	
+	
+	void setLeaderBoard() {
+		String filePath = "file/LeaderBoard/Mouse.txt";
+		PriorityQueue<Pair2> pq = new PriorityQueue<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] parts = line.split(",");
+				pq.add(new Pair2(parts[0], Double.parseDouble(parts[1]), Integer.parseInt(parts[2])));
+			}
+		} catch (IOException exception) {
+			System.out.println("ERROR");
+		}
+		if (correct * 100 / count >= 90) {
+			if(name.equals(""))
+			{
+				name = "UNKNOWN";
+			}
+			pq.add(new Pair2(name, Double.parseDouble(wpm.getText()), correct * 100 / count));
+			System.out.println(name);
+		}
+		Path path = Paths.get(filePath);
+		try {
+			Files.delete(path);
+
+			FileWriter fout = new FileWriter(filePath);
+			int maxi = 5;
+			if(pq.size() < 5)
+			{
+				maxi = pq.size();
+			}
+			for(int i = 0 ; i < maxi ; i++) {
+				fout.write(pq.peek().name+","+pq.peek().speed+","+pq.peek().correct + '\n');
+				pq.remove();
+			}
+			fout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public MousePractice(String s, String name)
 	{
+		this.name = name;
 		this.imgFile = s;
 		homeButton();
 		setTimer();

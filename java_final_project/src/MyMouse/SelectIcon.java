@@ -24,13 +24,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import MyKeyboard.KeyboardMain;
-import MyKeyboard.LongPractice;
-import MyKeyboard.LongPracticeMenu;
-import MyMouse.MousePractice;
+import SharePackage.MyPanel;
 import SharePackage.index;
 
 public class SelectIcon extends JFrame {
@@ -40,16 +37,9 @@ public class SelectIcon extends JFrame {
 	private JLabel label = new JLabel();
 	private JButton rightButton = new JButton(">");
 	private JButton leftButton = new JButton("<");
-
-	class MyPanel extends JPanel {
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
+	private JLabel name = new JLabel("Name");
+	private JTextField nameInput = new JTextField();
+	
 	public void homeButton()
 	{
 		
@@ -145,7 +135,7 @@ public class SelectIcon extends JFrame {
 	}
 
 	public void setWindow() {
-		setTitle("Typing Trainer");
+		setTitle("Mouse Practice");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200, 800);
 		setContentPane(panel);
@@ -163,7 +153,7 @@ public class SelectIcon extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new MousePractice("image/MousePracticeIcon/" + iconList.get(curIdx));
+				new MousePractice("image/MousePracticeIcon/" + iconList.get(curIdx), nameInput.getText());
 			}
 		});
 		panel.add(button);
@@ -219,7 +209,22 @@ public class SelectIcon extends JFrame {
 		panel.add(title);
 	}
 
+	public void setName()
+	{
+		name.setLocation(450,450);
+		name.setSize(200,200);
+		name.setFont(new Font("Arial",Font.PLAIN,30));
+		panel.add(name);
+		
+		
+		nameInput.setBackground(new Color(252, 237, 230));
+		nameInput.setLocation(550,530);
+		nameInput.setSize(200,50);
+		nameInput.setFont(new Font("Arial",Font.PLAIN,30));
+		panel.add(nameInput);
+	}
 	public SelectIcon() {
+		setName();
 		importImage();
 		startButton();
 		setRightButton();

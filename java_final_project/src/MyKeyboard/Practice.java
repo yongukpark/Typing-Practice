@@ -2,7 +2,6 @@ package MyKeyboard;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import SharePackage.MyPanel;
 import SharePackage.TimerRunnable;
 
 public class Practice extends JFrame{
@@ -33,16 +33,6 @@ public class Practice extends JFrame{
 	protected JLabel wpm = new JLabel("0");
 	protected int correct = -1;
 	
-	class MyPanel extends JPanel
-	{
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
 
 	public void setWindow()
 	{
@@ -77,8 +67,8 @@ public class Practice extends JFrame{
 		JPanel p = new JPanel();
 		p.setBackground(new Color(247, 226, 161));
 		p.setLayout(null);
-		p.setLocation(200,100);
-		p.setSize(800,100);
+		p.setLocation(500,100);
+		p.setSize(500,100);
 		JLabel cc = new JLabel("Progress : ");
 		cc.setLocation(39, 5);
 		cc.setSize(200,40);
@@ -94,10 +84,10 @@ public class Practice extends JFrame{
 		correctPercent.setSize(200,40);
 		correctPercent.setFont(new Font("Arial",Font.PLAIN,20));
 		JLabel w = new JLabel("WPM  : ");
-		w.setLocation(450,30);
+		w.setLocation(350,30);
 		w.setSize(200,40);
 		w.setFont(new Font("Arial",Font.BOLD,20));
-		wpm.setLocation(530,30);
+		wpm.setLocation(430,30);
 		wpm.setSize(200,40);
 		wpm.setFont(new Font("Arial",Font.PLAIN,20));
 		p.add(cc);

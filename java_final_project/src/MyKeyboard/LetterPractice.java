@@ -2,14 +2,11 @@ package MyKeyboard;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.security.CodeSigner;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -23,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import SharePackage.MyPanel;
 import SharePackage.TimerRunnable;
 
 public class LetterPractice extends JFrame{
@@ -49,18 +47,6 @@ public class LetterPractice extends JFrame{
 		    90, 88, 67, 86, 66, 78, 77             
 		};
 	
-	
-	class MyPanel extends JPanel
-	{
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-		public void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
-	
 	class MykeyListener extends KeyAdapter
 	{
 		public void keyPressed(KeyEvent e)
@@ -78,6 +64,9 @@ public class LetterPractice extends JFrame{
 	        		thread.start();
 	        		flg = true;
 	        	}
+			}
+			else if(!flg){
+				return;
 			}
     		random = new Random();
     		if(count == 30)
@@ -272,6 +261,7 @@ public class LetterPractice extends JFrame{
 	
 	public LetterPractice()
 	{
+		
 		homeButton();
 		setKeyBoard();
 		setStartJLabel();

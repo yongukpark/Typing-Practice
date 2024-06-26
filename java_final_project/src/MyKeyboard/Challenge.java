@@ -2,7 +2,6 @@ package MyKeyboard;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +29,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import SharePackage.MyPanel;
+
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 
@@ -53,16 +55,8 @@ public class Challenge extends JFrame {
 	private int correctFlg = 0;
 	private int correct = 0;
 	private int [][]report = new int [26][26];
+	private String name;
 
-	class MyPanel extends JPanel {
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
 	
 	class TimerRunnable implements Runnable {
 		@Override
@@ -94,7 +88,7 @@ public class Challenge extends JFrame {
 				}
 			}
 			dispose();
-			new ChallengeReport(report, count, correct, wpm);
+			new ChallengeReport(report, count, correct, wpm, name);
 		}
 
 	}
@@ -301,7 +295,7 @@ public class Challenge extends JFrame {
 	}
 
 	public void setWindow() {
-		setTitle("Typing practice");
+		setTitle("Challenge");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200, 800);
 		setContentPane(panel);
@@ -332,18 +326,11 @@ public class Challenge extends JFrame {
 		p.setLayout(null);
 		p.setLocation(200, 100);
 		p.setSize(800, 100);
-		JLabel cc = new JLabel("Progress : ");
-		cc.setLocation(39, 5);
-		cc.setSize(200, 40);
-		cc.setFont(new Font("Arial", Font.BOLD, 20));
-		countnum.setLocation(190, 5);
-		countnum.setSize(200, 40);
-		countnum.setFont(new Font("Arial", Font.PLAIN, 20));
 		JLabel cp = new JLabel("Correct Percent  : ");
-		cp.setLocation(10, 50);
+		cp.setLocation(10, 30);
 		cp.setSize(200, 40);
 		cp.setFont(new Font("Arial", Font.BOLD, 20));
-		correctPercent.setLocation(190, 50);
+		correctPercent.setLocation(190, 30);
 		correctPercent.setSize(200, 40);
 		correctPercent.setFont(new Font("Arial", Font.PLAIN, 20));
 		JLabel w = new JLabel("WPM  : ");
@@ -353,10 +340,8 @@ public class Challenge extends JFrame {
 		wpm.setLocation(530, 30);
 		wpm.setSize(200, 40);
 		wpm.setFont(new Font("Arial", Font.PLAIN, 20));
-		p.add(cc);
 		p.add(cp);
 		p.add(w);
-		p.add(countnum);
 		p.add(correctPercent);
 		p.add(wpm);
 		panel.add(p);
@@ -415,7 +400,8 @@ public class Challenge extends JFrame {
 
         panel.add(button);
 	}
-	public Challenge() {
+	public Challenge(String name) {
+		this.name = name;
 		homeButton();
 		importPractice();
 		setGraph();

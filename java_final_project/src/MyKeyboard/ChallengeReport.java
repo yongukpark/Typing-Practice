@@ -1,11 +1,16 @@
 package MyKeyboard;
 
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.PriorityQueue;
 	
@@ -14,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import SharePackage.MyPanel;
 
 
 public class ChallengeReport extends JFrame {
@@ -25,19 +32,10 @@ public class ChallengeReport extends JFrame {
 	private int correct = 0;
 	private JPanel context = new JPanel();
 	private int [][]report = new int [26][26];
-
-	class MyPanel extends JPanel {
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
+	private String name;
 	
 	public void setWindow() {
-		setTitle("Typing practice");
+		setTitle("Challenge Report");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200, 800);
 		setContentPane(panel);
@@ -100,7 +98,7 @@ public class ChallengeReport extends JFrame {
 	    }
 	}
 
-
+		
 	void setLabel()
 	{
 		
@@ -115,7 +113,7 @@ public class ChallengeReport extends JFrame {
 		wpmLabel.setLocation(940,400);
 		wpmLabel.setSize(200,100);
 		wpmLabel.setFont(new Font("Arial",Font.BOLD,30));
-		wpmLabel.setText("WPM");
+		wpmLabel.setText("WP	M");
 		panel.add(wpmLabel);
 		
 		JLabel correctVal = new JLabel();
@@ -214,6 +212,71 @@ public class ChallengeReport extends JFrame {
 		
 
 	}
+	
+	class Pair2 implements Comparable<Pair2> {
+		String name;
+		int correct, speed;
+
+		Pair2(String name, int speed, int correct) {
+			this.name = name;
+			this.speed = speed;
+			this.correct = correct;
+		}
+		@Override
+		public int compareTo(Pair2 p) {
+			if (this.speed > p.speed) {
+				return -1;
+			} 
+			else if (this.speed == p.speed) {
+				if (this.correct > p.correct) {
+					return -1;
+				}
+			}
+			return 1;
+		}
+	}
+
+	void setLeaderBoard() {
+		String filePath = "file/LeaderBoard/KeyBoard.txt";
+		PriorityQueue<Pair2> pq = new PriorityQueue<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] parts = line.split(",");
+				pq.add(new Pair2(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2])));
+			}
+		} catch (IOException exception) {
+			System.out.println("ERROR");
+		}
+		if (count != 0 && correct * 100 / count >= 90) {
+			if(name.equals(""))
+			{
+				name = "UNKNOWN";
+			}
+			pq.add(new Pair2(name, Integer.parseInt(wpm.getText()), correct * 100 / count));
+		}
+		Path path = Paths.get(filePath);
+		try {
+			Files.delete(path);
+
+			FileWriter fout = new FileWriter(filePath);
+			int maxi = 5;
+			if(pq.size() < 5)
+			{
+				maxi = pq.size();
+			}
+			for(int i = 0 ; i < maxi ; i++) {
+				fout.write(pq.peek().name+","+pq.peek().speed+","+pq.peek().correct + '\n');
+				pq.remove();
+			}
+			fout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	void setContext()
 	{
 		context.setLayout(null);
@@ -222,15 +285,17 @@ public class ChallengeReport extends JFrame {
 		panel.add(context);
 	}
 	
-	public ChallengeReport(int [][]arr, int count, int correct, JLabel wpm) {
+	public ChallengeReport(int [][]arr, int count, int correct, JLabel wpm, String name) {
 		this.report = arr;
 		this.count = count;
 		this.correct = correct;
 		this.wpm = wpm;
+		this.name = name;
 		homeButton();
 		setWindow();
 		setContext();
 		setLabel();
+		setLeaderBoard();
 		this.setVisible(true);
 		panel.setFocusable(true);
 		panel.requestFocusInWindow();

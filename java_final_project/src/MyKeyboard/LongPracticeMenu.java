@@ -5,6 +5,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import SharePackage.MyPanel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,16 +21,7 @@ public class LongPracticeMenu extends JFrame {
 	private MyPanel panel = new MyPanel();
 	private JTextArea textArea = new JTextArea();
 	private JList<String> strList;
-
-	class MyPanel extends JPanel {
-		private ImageIcon backgroundImgIcon = new ImageIcon("image/background_image.jpeg");
-		private Image backgroundImg = backgroundImgIcon.getImage();
-
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
-		}
-	}
+	private String character;
 
 	public void setWindow() {
 		setTitle("Choose Long Article");
@@ -130,7 +123,7 @@ public class LongPracticeMenu extends JFrame {
 					}
 					fout.close();
 					dispose();
-					new LongPracticeMenu();
+					new LongPracticeMenu(character);
 					
 				} catch (IOException exception) {
 					System.out.println("ERROR");
@@ -153,7 +146,7 @@ public class LongPracticeMenu extends JFrame {
 					return;
 				}
 				dispose();
-				new LongPractice("file/LongPractice/" + strList.getSelectedValue() + ".txt");
+				new LongPractice("file/LongPractice/" + strList.getSelectedValue() + ".txt", character);
 			}
 		});
 		panel.add(button);
@@ -180,7 +173,8 @@ public class LongPracticeMenu extends JFrame {
 
         panel.add(button);
 	}
-	public LongPracticeMenu() {
+	public LongPracticeMenu(String character) {
+		this.character = character;
 		homeButton();
 		setWindow();
 		setTitle();

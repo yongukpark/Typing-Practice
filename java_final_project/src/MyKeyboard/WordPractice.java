@@ -1,13 +1,20 @@
 package MyKeyboard;
 
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class WordPractice extends Practice{
@@ -15,6 +22,11 @@ public class WordPractice extends Practice{
 	private boolean flg = false;
 	private int count = 0;
 	private Random random;
+	private JLabel character = new JLabel();
+	private JLabel heart1;
+	private JLabel heart2;
+	private ImageIcon grayImg = null;
+	private ImageIcon colorImg = null;
 	
 	public void importPractice()
 	{
@@ -31,8 +43,53 @@ public class WordPractice extends Practice{
         
 	}
 	
+	public void setImg(String s)
+	{
+		BufferedImage img = null;
+		try {
+			img= ImageIO.read(new File(s));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}     
+    	Image updateImg = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+    	colorImg = new ImageIcon(updateImg);
+        character.setIcon(new ImageIcon(updateImg));
+		character.setSize(200,200);
+		character.setLocation(250,20);
+		character.setOpaque(true);
+		panel.add(character);
+		
+		for (int y = 0; y < img.getHeight(); y++) {
+			for (int x = 0; x < img.getWidth(); x++) {
+				Color c = new Color(img.getRGB(x, y));
+				int Y = (c.getRed() + c.getGreen() + c.getBlue()) / 3;
+				img.setRGB(x, y, new Color(Y, Y, Y).getRGB());
+			}
+		}
+		updateImg = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+		grayImg = new ImageIcon(updateImg);
+	}
 	
-	public WordPractice()
+	public void setHeart()
+	{
+		ImageIcon icon = new ImageIcon("image/heart.png");
+		Image img = icon.getImage();
+		Image updateImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		heart1 = new JLabel(icon);
+		heart1.setLocation(230, 20);
+		heart1.setSize(50, 50);
+		panel.add(heart1);
+		heart2 = new JLabel(icon);
+		heart2.setLocation(430, 20);
+		heart2.setSize(50, 50);
+		panel.add(heart2);
+		heart1.setVisible(false);
+		heart2.setVisible(false);
+	}
+	
+	
+	public WordPractice(String s)
 	{
 		super();
 		
@@ -47,7 +104,18 @@ public class WordPractice extends Practice{
 	        	if(target.getText().equals(input.getText()))
 	        	{
 	        		correct = correct + 1;
+	        		character.setIcon(colorImg);
+	        		if(correct != 0)
+	        		{
+	        			heart1.setVisible(true);
+		        		heart2.setVisible(true);
+	        		}
 	        	}
+	        	else {
+	        		character.setIcon(grayImg);
+	        		heart1.setVisible(false);
+	        		heart2.setVisible(false);
+				}
 
 	    		random = new Random();
 	    		if(count == 20)
@@ -68,7 +136,7 @@ public class WordPractice extends Practice{
 	    			if(res == JOptionPane.YES_OPTION)
 	    			{
 	    				dispose();
-	    				new WordPractice();
+	    				new WordPractice(s);
 	    			}
 	    			else
 	    			{
@@ -94,7 +162,8 @@ public class WordPractice extends Practice{
 	    		count = count + 1;
 	        }
 	    });
-	    
+	    setHeart();
+	    setImg(s);
 		setTitle("Word Practice");
 		importPractice();
 		countnum.setText("0 / 20");
